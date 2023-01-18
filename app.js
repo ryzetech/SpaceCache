@@ -1,14 +1,38 @@
+// load configs and spaces
 const config = require("./config.json");
 const spaces = require("./spaces.json");
 
+// load modules
 const { setInterval } = require("node:timers/promises");
 const fetch = require("node-fetch");
-
+const express = require("express");
+const { graphqlHTTP } = require('express-graphql');
+const { buildSchema } = require('graphql');
 const NodeCache = require("node-cache");
 const jp = require('jsonpath');
 
+// set up things
 const cache = new NodeCache({ stdTTL: config.checkperiod * 3 });
 
+let schema = buildSchema(`
+  type Query {
+    
+`);
+
+let root = {
+
+};
+
+
+let app = express();
+app.use('/json', express.json());
+/*
+app.use('/graphql', graphqlHTTP({
+
+}));
+*/
+
+// CHECK LOOP
 (async function () {
   for await (const time of setInterval(config.checkperiod * 10)) {
     console.log("Checking for spaces...");
@@ -20,6 +44,7 @@ const cache = new NodeCache({ stdTTL: config.checkperiod * 3 });
   }
 })();
 
+// HELPER FUNCTIONS
 async function checkSpace(space) {
   let response, data, open;
   try {
