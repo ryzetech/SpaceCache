@@ -1,0 +1,40 @@
+[
+  {
+    "name": "UNHB",
+    "id": "unhb",
+    "endpoint": "https://keinanschluss.unhb.de/spaceapi.json"
+  },
+  {
+    "name": "Chaostreff Dortmund",
+    "id": "ctdo",
+    "endpoint": "https://status.ctdo.de/api/spaceapi/v13"
+  },
+  {
+    "name": "Chaospott",
+    "id": "chaospott",
+    "endpoint": "https://status.chaospott.de/status.json"
+  },
+  {
+    "name": "CCC Aachen",
+    "id": "cccaachen",
+    "endpoint": "https://status.aachen.ccc.de/api/v0/status/current?public",
+    "path": "$.changed.status",
+    "expected": "public"
+  },
+  {
+    "name": "CCC Köln",
+    "id": "ccckoeln",
+    "endpoint": "https://api.koeln.ccc.de"
+  },
+  {
+    "name": "Hasi",
+    "id": "hasi",
+    "endpoint": "https://status.hasi.it/"
+  },
+  {
+    "name": "Warpzone",
+    "id": "warpzone",
+    "endpoint": "https://api.warpzone.ms/status",
+    "path": "$.tuerOffen"
+  }
+]
