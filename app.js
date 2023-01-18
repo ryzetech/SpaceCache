@@ -21,9 +21,11 @@ const cache = new NodeCache({ stdTTL: config.checkperiod * 3 });
 })();
 
 async function checkSpace(space) {
-  const response = await fetch(space.endpoint);
-  const data = await response.json();
-  let open;
+  let response, data, open;
+  try {
+    response = await fetch(space.endpoint);
+    data = await response.json();
+  } catch (e) { console.error(`The space ${space.id} might not be reachable. Please check the endpoint. Error: ${e}`); }
 
   if (!space.path) {
     try { open = data.state.open; }
