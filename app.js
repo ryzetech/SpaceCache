@@ -1,27 +1,32 @@
-const config = require( "./config.json" );
-const spaces = require( "./spaces.json" );
+const config = require("./config.json");
+const spaces = require("./spaces.json");
 
-const { setInterval } = require( "node:timers/promises" );
+const { setInterval } = require("node:timers/promises");
+const fetch = require("node-fetch");
 
-const NodeCache = require( "node-cache" );
-// const cron = require( "node-cron" );
+const NodeCache = require("node-cache");
 const jp = require('jsonpath');
 
-const cache = new NodeCache({ stdTTL: config.checkperiod*3 });
+const cache = new NodeCache({ stdTTL: config.checkperiod * 3 });
 
-(async function() {
-  for await (const time of setInterval(config.checkperiod*1000)) {
-    console.log( "Checking for spaces..." );
+(async function () {
+  for await (const time of setInterval(config.checkperiod * 10)) {
+    console.log("Checking for spaces...");
     for (const space of spaces) {
-      console.log( `Checking ${space.id}...` );
-      let o = checkSpace(space);
+      console.log(`Checking ${space.id}...`);
+      let o = await checkSpace(space);
+      console.log(`Space ${space.id} is ${o ? "open" : "closed"}`);
     }
   }
-})
+})();
 
 async function checkSpace(space) {
-  const response = await fetch(space.url);
-  const data = await response.json();
+  try {
+    const response = await fetch(space.endpoint);
+    const data = await response.json();
+  } catch (error) {
+    console.error(error);
+  }
   let open;
 
   if (!space.path) {
